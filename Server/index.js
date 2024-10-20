@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const userRoutes = require("./routes/UserRouter");
 const Connection = require("./dataBase/db");
 const cors = require("cors");
 const bodyPorser = require("body-parser");
@@ -11,17 +12,18 @@ app.use(express.json());
 app.use(cors());
 
 // Import your user routes
-const userRoutes = require("./routes/UserRouter");
+
 
 Connection();
 
-app.listen(PORT , (error) =>{
-    if (!error) {
+app.use(bodyPorser.json())
 
-         console.log ("Server is Successfully Running and App is listening on port "+ PORT )
-    }
-       
-    else 
-        console.log("Error occurred, server can't start", error);
-    }
-);
+app.use("/api/users", userRoutes);
+
+app.listen(PORT, (error) => {
+  if (!error) {
+    console.log(
+      "Server is Successfully Running and App is listening on port " + PORT
+    );
+  } else console.log("Error occurred, server can't start", error);
+});
